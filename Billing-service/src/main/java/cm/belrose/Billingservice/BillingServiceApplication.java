@@ -53,6 +53,10 @@ public class BillingServiceApplication implements Serializable {
 interface BillRepository extends JpaRepository<Bill, Long> {
 }
 
+@RepositoryRestResource
+interface ProductItemRepository extends JpaRepository<ProductItem, Long> {
+    List<ProductItem> findByBillId(Long billID);
+}
 @Entity
 @Data
 @NoArgsConstructor
@@ -70,21 +74,6 @@ class Bill implements Serializable {
     @OneToMany(mappedBy = "bill")
     private Collection<ProductItem> productitems;
 }
-
-@Data
-class Customer {
-
-    private Long id;
-    private String name;
-    private String email;
-}
-
-@RepositoryRestResource
-interface ProductItemRepository extends JpaRepository<ProductItem, Long> {
-    List<ProductItem> findByBillId(Long billID);
-
-}
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -102,6 +91,14 @@ class ProductItem implements Serializable {
     private double price;
     @ManyToOne
     private Bill bill;
+}
+
+@Data
+class Customer {
+
+    private Long id;
+    private String name;
+    private String email;
 }
 
 @Data
